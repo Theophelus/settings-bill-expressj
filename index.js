@@ -1,7 +1,7 @@
 // define imports for express, body parser and handlebars
 const express = require('express');
-const Factory = require('./factoryFunction');
-
+const SettingsBill = require('./factoryFunction');
+const settingsBill = SettingsBill();
 const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
 const app = express();
@@ -27,14 +27,16 @@ app.post('/settings', (req, res) => {
     let callCost = req.body.callCost;
     let warningLevel = req.body.warningLevel;
     let criticalLevel = req.body.criticalLevel;
-    console.log(callCost);
+
+    settingsBill.updateCall(callCost);
 
     let settings = {
-        smsCost: Factory.updateSms(),
-        callCost: Factory.updateCall(),
-        warningLevel: Factory.updateWarning(),
-        criticalLevel: Factory.updateCritical()
+        smsCost: settingsBill.updateSms(smsCost),
+        callCost: settingsBill.updateCall(callCost),
+        warningLevel: settingsBill.updateWarning(warningLevel),
+        criticalLevel: settingsBill.updateCritical(criticalLevel)
     };
+    console.log(settingsBill.updateCall(callCost));
     globalSeting = settings;
     res.render('home', { settings });
 });
