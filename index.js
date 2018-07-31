@@ -28,20 +28,21 @@ app.post('/settings', (req, res) => {
     let warningLevel = req.body.warningLevel;
     let criticalLevel = req.body.criticalLevel;
 
-    settingsBill.updateCall(callCost);
-
-    let settings = {
-        smsCost: settingsBill.updateSms(smsCost),
-        callCost: settingsBill.updateCall(callCost),
+    console.log(settingsBill.returnUpdateCall(callCost));
+    res.render('home', {
+        smsCost: settingsBill.returnUpdateSms(smsCost),
+        callCost: settingsBill.returnUpdateCall(callCost),
         warningLevel: settingsBill.updateWarning(warningLevel),
         criticalLevel: settingsBill.updateCritical(criticalLevel)
-    };
-    console.log(settingsBill.updateCall(callCost));
-    globalSeting = settings;
-    res.render('home', { settings });
+    });
+    // console.log(settings);
+    // globalSeting = settings;
+    // res.render('home', { settings });
 });
 
-app.get('/settings', (req, res) => {
+
+// define a POST route for when call or sms are being selected
+app.get('/action', (req, res) => {
 
 });
 
