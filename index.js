@@ -1,6 +1,7 @@
 // define imports for express, body parser and handlebars
+const moment = require('moment');
 const express = require('express');
-const SettingsBill = require('./factoryFunction');
+const SettingsBill = require('./public/factoryFunction');
 const settingsBill = SettingsBill();
 const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
@@ -17,32 +18,40 @@ app.use(bodyParser.json());
 
 //define a GET request to render UI for setting bills
 app.get('/', (req, res) => {
-    res.render('home');
+    console.log(settingsBill.results());
+    res.render('home', settingsBill.results());
 });
 
-//define POST route for settings bill
+//define a POST route Handler for settings bill values
 app.post('/settings', (req, res) => {
     //define variables to store incoming values from th form
-    let smsCost = req.body.smsCost;
-    let callCost = req.body.callCost;
+    let callTotal = req.body.callCost;
+    let smsTotal = req.body.smsCost;
     let warningLevel = req.body.warningLevel;
     let criticalLevel = req.body.criticalLevel;
-
-    console.log(settingsBill.returnUpdateCall(callCost));
-    res.render('home', {
-        smsCost: settingsBill.returnUpdateSms(smsCost),
-        callCost: settingsBill.returnUpdateCall(callCost),
-        warningLevel: settingsBill.updateWarning(warningLevel),
-        criticalLevel: settingsBill.updateCritical(criticalLevel)
-    });
-    // console.log(settings);
-    // globalSeting = settings;
-    // res.render('home', { settings });
+    
+    // Pass those variables as arguments in related functions
+    settingsBill.setCall(callTotal);
+    settingsBill.setSms(smsTotal);
+    settingsBill.setWarnings(warningLevel);
+    settingsBill.setCritical(criticalLevel);
+    //redirect to Home
+    res.redirect('/');
 });
 
+// define a POST route handler for either sms or call are selected
+app.post('/action', (req, res) => {
+    let billType = req.body.billType;
+     settingsBill.calculations(billType);
+    res.redirect('/');
+});
 
-// define a POST route for when call or sms are being selected
-app.get('/action', (req, res) => {
+//define a GET rounte handler 
+app.get('/actions', (req, res) => {
+
+});
+//define a GET rounte handler 
+app.get('/action/:type', (req, res)=> {
 
 });
 
