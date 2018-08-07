@@ -39,7 +39,7 @@ app.post('/settings', (req, res) => {
     res.redirect('/');
 });
 
-// define a POST route handler for either sms or call are selected
+// define a POST route handler for either sms or call if selected
 app.post('/action', (req, res) => {
     let billType = req.body.billType;
      settingsBill.calculations(billType);
@@ -47,11 +47,22 @@ app.post('/action', (req, res) => {
 });
 
 //define a GET rounte handler 
-app.get('/actions', (req, res) => {
+app.get('/actions', (req, res) => {  
+
+    let billList = settingsBill.
+
+    res.render('bill', billList)
 
 });
 //define a GET rounte handler 
 app.get('/action/:type', (req, res)=> {
+
+    // let type = req.body.type
+
+    // if(type == 'call' || type == 'sms'){
+
+
+    // }
 
 });
 

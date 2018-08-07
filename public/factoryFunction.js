@@ -5,6 +5,13 @@ module.exports = function(){
     var smsCost = 0;
     var warningLevel = 0;
     var criticalLevel = 0;
+
+    let bill = [];
+    let date = new Date();
+
+    
+
+    //define an object for time stamps
     //Add methods to check if its a string then convert into  a decimal
     var setCall = function(callSettings){
       if(callSettings !=""){
@@ -27,17 +34,7 @@ module.exports = function(){
         criticalLevel = parseFloat(criticalSettings);
       }
     };
-    //Define a function to restrict grand total
-    let colorRestrictions = function(){
-      if(grandTotal >= warningLevel && grandTotal < warningLevel){
-        return 'warnings';
-      }else if(grandTotal >= criticalLevel){
-        return 'critical';
-      }
-    };
-
-    ///////////////////////END UPDATE SETTINGS///////////////////////////////////
-  
+    
     ///////////////////////////BILL TYPE////////////////////////////////////////
     // create a variables that will keep track of all three totals.
     var callTotal = 0;
@@ -45,25 +42,41 @@ module.exports = function(){
     var grandTotal = 0;
     //Create methods for checking and return calls and sms's amount
     var calculations = function(radioBtnChecked){
+      let bill = {
+        type: radioBtnChecked,
+        date: date
+      };
+
       if(radioBtnChecked === "call"){
         callTotal += callCost;
         grandTotal += callCost;
+
+        bill.cost = callCost;
       }else if( radioBtnChecked == 'sms'){
         smsTotal += smsCost;
         grandTotal += smsCost;
       }
     };
     
-    // var settingsTotal = function(){
-    //    grandTotal = callTotal + smsTotal;
-    // };
+    var settingsTotal = function(){
+       grandTotal = callTotal + smsTotal;
+    };
+    //Define a function to restrict grand total
+    let colorRestrictions = function(){
+      if(grandTotal >= warningLevel && grandTotal < criticalLevel){
+        return 'warning';
+      }
+      if(grandTotal > criticalLevel){
+        return 'danger';
+      }
+    };
     //////////////////////////END BILL TYPE//////////////////////////////////////
     return {
       setCall,
       setSms,
       setWarnings,
       setCritical,
-      colorRestrictions,
+      settingsTotal,
       ///////////////////////////////////////////////////////////////////////////
       calculations,
       // settingsTotal, 
@@ -75,6 +88,7 @@ module.exports = function(){
           callCost,
           smsCost,
           warningLevel,
+          colorRestrictions,
           criticalLevel
         };
       }
