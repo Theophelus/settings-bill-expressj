@@ -49,10 +49,11 @@ app.post('/action', (req, res) => {
 //define a GET rounte handler 
 app.get('/actions', (req, res) => {  
 
-    let billList = settingsBill.
+    // let billList = settingsBill.
 
-    res.render('bill', billList)
+    // res.render('bill', billList)
 
+    res.render('actions');
 });
 //define a GET rounte handler 
 app.get('/action/:type', (req, res)=> {

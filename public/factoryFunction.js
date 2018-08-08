@@ -5,12 +5,9 @@ module.exports = function(){
     var smsCost = 0;
     var warningLevel = 0;
     var criticalLevel = 0;
-
+    //
     let bill = [];
-    let date = new Date();
-
-    
-
+    let currentData = new Date();
     //define an object for time stamps
     //Add methods to check if its a string then convert into  a decimal
     var setCall = function(callSettings){
@@ -42,19 +39,20 @@ module.exports = function(){
     var grandTotal = 0;
     //Create methods for checking and return calls and sms's amount
     var calculations = function(radioBtnChecked){
-      let bill = {
+      bill({
         type: radioBtnChecked,
-        date: date
-      };
+        cost,
+        date: currentData
+      });
 
       if(radioBtnChecked === "call"){
         callTotal += callCost;
         grandTotal += callCost;
-
         bill.cost = callCost;
       }else if( radioBtnChecked == 'sms'){
         smsTotal += smsCost;
         grandTotal += smsCost;
+        bill.cost = smsCost;
       }
     };
     
@@ -82,9 +80,9 @@ module.exports = function(){
       // settingsTotal, 
       results : function(){
         return{
-          callTotal: callTotal.toFixed(),
-          smsTotal: smsTotal.toFixed(),    
-          grandTotal: grandTotal.toFixed(),
+          callTotal: callTotal.toFixed(2),
+          smsTotal: smsTotal.toFixed(2),    
+          grandTotal: grandTotal.toFixed(2),
           callCost,
           smsCost,
           warningLevel,
