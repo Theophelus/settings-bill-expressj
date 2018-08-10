@@ -1,13 +1,15 @@
 // define imports for express, body parser and handlebars
-const moment = require('moment');
 const express = require('express');
 const SettingsBill = require('./public/factoryFunction');
-const settingsBill = SettingsBill();
+let Moment = require('moment');
 const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
 const app = express();
+//const Moment = moment();
+const settingsBill = SettingsBill();
+var hbs = exphbs.create({defaultLayout: 'main', helpers : 'helpers'});
 //configure express handlebars
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 //configure public folder
 app.use(express.static('public'));
@@ -15,10 +17,8 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
-
 //define a GET request to render UI for setting bills
 app.get('/', (req, res) => {
-    console.log(settingsBill.results());
     res.render('home', settingsBill.results());
 });
 
@@ -48,22 +48,22 @@ app.post('/action', (req, res) => {
 
 //define a GET rounte handler 
 app.get('/actions', (req, res) => {  
-
-    // let billList = settingsBill.
-
-    // res.render('bill', billList)
-
-    res.render('actions');
+    let billType = settingsBill.getBill();
+    console.log(billType);
+    res.render('actions', { billType, helpers: {'time': function(){
+        return Moment(this.timeStamp).fromNow();
+    }}});
 });
-//define a GET rounte handler 
-app.get('/action/:type', (req, res)=> {
-
-    // let type = req.body.type
-
-    // if(type == 'call' || type == 'sms'){
+//define a GET route handler 
+app.get('/actions/:type', (req, res)=> {
 
 
-    // }
+     let theType = req.params.type;
+
+     if(theType == 'call' || theType == 'sms'){
+        res.render('actions', {billType: settingsBill.filterRecords(theType)});
+        console.log(settingsBill.filterRecords(theType));
+     }
 
 });
 

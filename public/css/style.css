@@ -20,6 +20,11 @@
   font-weight: bold;
   font-size: 2em;
 }
-.action h4 {
+.actions h2 {
   text-align: center;
+  color: #99a3a4;
+}
+.actionDisplay {
+  text-align: center;
+  color: #1EAEDB;
 }

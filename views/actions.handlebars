@@ -1,5 +1,6 @@
-<div class="container actions" action='/actons' method='get'>
-<h4 style="text-align:center">ACTIONS</h4>
+
+<div class="container actions">
+<h2>ACTIONS</h2>
 <P>The route used for the Bill Type form it record an action of sms or call when the Add button is pressed. And 
     add the appropriate price based on the settings entered & 
     a timestamp when record has been entered to a list.
@@ -7,19 +8,26 @@
     the timestamps using fromNow and display a total cost for the selected action.
     </P>
 
-<div class="actionDisplay">
+<div class="actionDisplay" method='get'>
     <div class="row">
-        <table>
+        
+        <table class="u-full-width">
             <thead>
-                <tr>TYPE</tr>
-                <tr>COST</tr>
-                <tr>WHEN IT HAPPENED</tr>
+                <tr>
+                    <th>TYPE</th>
+                    <th>PRICES</th>
+                    <th>WHEN IT HAPPENED</th>
+                </tr>
             </thead>
+            {{#each billType}}
             <tbody>
                 <tr>
-                    <td></td>
+                    <td>{{type}}</td>
+                    <td>{{cost}}</td>
+                    <td>{{time}}</td>
                 </tr>
             </tbody>
+             {{/each}}
         </table>
     </div>
 </div>

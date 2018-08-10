@@ -6,8 +6,8 @@ module.exports = function(){
     var warningLevel = 0;
     var criticalLevel = 0;
     //
-    let bill = [];
-    let currentData = new Date();
+    let getAction = [];
+    // let timeStamp = new Date();
     //define an object for time stamps
     //Add methods to check if its a string then convert into  a decimal
     var setCall = function(callSettings){
@@ -39,23 +39,34 @@ module.exports = function(){
     var grandTotal = 0;
     //Create methods for checking and return calls and sms's amount
     var calculations = function(radioBtnChecked){
-      bill({
+      let currentData = {
         type: radioBtnChecked,
-        cost,
-        date: currentData
-      });
-
-      if(radioBtnChecked === "call"){
-        callTotal += callCost;
-        grandTotal += callCost;
-        bill.cost = callCost;
-      }else if( radioBtnChecked == 'sms'){
-        smsTotal += smsCost;
-        grandTotal += smsCost;
-        bill.cost = smsCost;
+        timeStamp: new Date()
+      };
+      if (grandTotal < criticalLevel) {
+        if(radioBtnChecked === "call"){
+          currentData['cost'] = callCost;
+          callTotal += callCost;
+          grandTotal += callCost;
+        }else if( radioBtnChecked == 'sms'){
+          currentData['cost'] = smsCost;
+          smsTotal += smsCost;
+          grandTotal += smsCost;
+        }
+  
       }
+      
+      getAction.push(currentData);
     };
-    
+    //define a filtering function to filter call or sms
+    function filterRecords (type){
+      return getAction.filter(record => record.type === type);
+    }
+    //define a function to return the bill empty array
+    let getBill = function(){
+      return getAction;
+    };
+    // console.log(getBill());
     var settingsTotal = function(){
        grandTotal = callTotal + smsTotal;
     };
@@ -63,8 +74,8 @@ module.exports = function(){
     let colorRestrictions = function(){
       if(grandTotal >= warningLevel && grandTotal < criticalLevel){
         return 'warning';
-      }
-      if(grandTotal > criticalLevel){
+      } 
+      if(grandTotal > criticalLevel || grandTotal == criticalLevel){
         return 'danger';
       }
     };
@@ -75,8 +86,9 @@ module.exports = function(){
       setWarnings,
       setCritical,
       settingsTotal,
-      ///////////////////////////////////////////////////////////////////////////
       calculations,
+      getBill,
+      filterRecords,
       // settingsTotal, 
       results : function(){
         return{
