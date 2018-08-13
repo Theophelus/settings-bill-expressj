@@ -1,4 +1,3 @@
-//Create a factory function for called SettingBill
 module.exports = function(){
     // create a variables that will keep track of all the settings
     var callCost = 0;
@@ -7,8 +6,6 @@ module.exports = function(){
     var criticalLevel = 0;
     //
     let getAction = [];
-    // let timeStamp = new Date();
-    //define an object for time stamps
     //Add methods to check if its a string then convert into  a decimal
     var setCall = function(callSettings){
       if(callSettings !=""){
@@ -82,10 +79,17 @@ module.exports = function(){
         return '';
       }
     };
-    // let getSettings = function(levels){
-    //   return levels = colorRestrictions();
-    // }
-    // let levels = colorRestrictions();
+    //define a function to clear textboxes
+    var clear = function(){
+      callCost = 0;
+      callTotal = 0;
+      smsCost = 0;
+      smsTotal = 0;
+      grandTotal = 0;
+      warningLevel = 0;
+      criticalLevel = 0;
+    };
+
     //////////////////////////END BILL TYPE//////////////////////////////////////
     return {
       setCall,
@@ -97,7 +101,7 @@ module.exports = function(){
       getBill,
       filterRecords,
       colorRestrictions,
-
+      clear,
       // settingsTotal, 
       results : function(){
         return{

@@ -66,11 +66,14 @@ app.get('/actions/:type', (req, res) => {
         }});
         console.log(settingsBill.filterRecords(theType));
      }
-
 });
-
+//define a POST route handler for clearing textboxes
+app.post('/rest', (req, res) => {
+    settingsBill.clear();
+    res.redirect('/');
+});
 //setting up a express server
-const PORT = process.env.PORT || 3007;
+const PORT = process.env.PORT || 3009;
 app.listen(PORT, () => {
  console.log('app starting at port', PORT);
 });
