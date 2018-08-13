@@ -55,13 +55,15 @@ app.get('/actions', (req, res) => {
     }}});
 });
 //define a GET route handler 
-app.get('/actions/:type', (req, res)=> {
-
-
+app.get('/actions/:type', (req, res) => {
      let theType = req.params.type;
-
+     console.log(theType);
      if(theType == 'call' || theType == 'sms'){
-        res.render('actions', {billType: settingsBill.filterRecords(theType)});
+        res.render('actions', {billType: settingsBill.filterRecords(theType),
+            helpers: {'time': function(){
+                return Moment(this.timeStamp).fromNow();
+            }
+        }});
         console.log(settingsBill.filterRecords(theType));
      }
 

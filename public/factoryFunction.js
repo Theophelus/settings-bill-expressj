@@ -55,7 +55,8 @@ module.exports = function(){
         }
   
       }
-      
+
+      colorRestrictions();
       getAction.push(currentData);
     };
     //define a filtering function to filter call or sms
@@ -68,17 +69,23 @@ module.exports = function(){
     };
     // console.log(getBill());
     var settingsTotal = function(){
-       grandTotal = callTotal + smsTotal;
+       return grandTotal.toFixed(2);
     };
     //Define a function to restrict grand total
     let colorRestrictions = function(){
       if(grandTotal >= warningLevel && grandTotal < criticalLevel){
         return 'warning';
       } 
-      if(grandTotal > criticalLevel || grandTotal == criticalLevel){
+       if(grandTotal >= criticalLevel){
         return 'danger';
+      }else{
+        return '';
       }
     };
+    // let getSettings = function(levels){
+    //   return levels = colorRestrictions();
+    // }
+    // let levels = colorRestrictions();
     //////////////////////////END BILL TYPE//////////////////////////////////////
     return {
       setCall,
@@ -89,6 +96,8 @@ module.exports = function(){
       calculations,
       getBill,
       filterRecords,
+      colorRestrictions,
+
       // settingsTotal, 
       results : function(){
         return{
@@ -98,8 +107,8 @@ module.exports = function(){
           callCost,
           smsCost,
           warningLevel,
-          colorRestrictions,
-          criticalLevel
+          criticalLevel,
+          levels: colorRestrictions()
         };
       }
     };
