@@ -4,19 +4,26 @@ const SettingsBill = require('./public/factoryFunction');
 let Moment = require('moment');
 const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
+
+//initialize instances
 const app = express();
-//const Moment = moment();
 const settingsBill = SettingsBill();
-var hbs = exphbs.create({defaultLayout: 'main', helpers : 'helpers'});
+var hbs = exphbs.create({defaultLayout: 'main',
+ helpers : {'time': function(){
+    return Moment(this.timeStamp).fromNow();
+}}});
 //configure express handlebars
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
+
 //configure public folder
 app.use(express.static('public'));
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
+
 //define a GET request to render UI for setting bills
 app.get('/', (req, res) => {
     res.render('home', settingsBill.results());
@@ -50,20 +57,14 @@ app.post('/action', (req, res) => {
 app.get('/actions', (req, res) => {  
     let billType = settingsBill.getBill();
     console.log(billType);
-    res.render('actions', { billType, helpers: {'time': function(){
-        return Moment(this.timeStamp).fromNow();
-    }}});
+    res.render('actions', { billType });
 });
 //define a GET route handler 
 app.get('/actions/:type', (req, res) => {
      let theType = req.params.type;
      console.log(theType);
      if(theType == 'call' || theType == 'sms'){
-        res.render('actions', {billType: settingsBill.filterRecords(theType),
-            helpers: {'time': function(){
-                return Moment(this.timeStamp).fromNow();
-            }
-        }});
+        res.render('actions', {billType: settingsBill.filterRecords(theType)});
         console.log(settingsBill.filterRecords(theType));
      }
 });
