@@ -9,8 +9,11 @@ const bodyParser = require('body-parser');
 const app = express();
 const settingsBill = SettingsBill();
 var hbs = exphbs.create({defaultLayout: 'main',
+
+//define a register helper to record events on when they were executed
  helpers : {'time': function(){
     return Moment(this.timeStamp).fromNow();
+
 }}});
 //configure express handlebars
 app.engine('handlebars', hbs.engine);
