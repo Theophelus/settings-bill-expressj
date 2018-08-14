@@ -2,8 +2,8 @@ module.exports = function(){
     // create a variables that will keep track of all the settings
     var callCost = 0;
     var smsCost = 0;
-    var warningLevel;
-    var criticalLevel;
+    var warningLevel = 0;
+    var criticalLevel = 0;
     //
     let getAction = [];
     //Add methods to check if its a string then convert into  a decimal
@@ -36,7 +36,7 @@ module.exports = function(){
     var grandTotal = 0;
     //Create methods for checking and return calls and sms's amount
     var calculations = function(radioBtnChecked){
-      
+
       let currentData = {
         type: radioBtnChecked,
         timeStamp: new Date()
